@@ -10,16 +10,14 @@ public abstract class Item {
         this.name = name;
         this.weight = weight;
         this.maxStack = maxStack;
-        this.price = price;
         this.ItemType = ItemType;
     }
-    private String ItemType;
-    private double price;
-    private int itemID;
-    private String name;
-    private double weight;
-    private boolean isStackable;
-    private int maxStack;
+        private String ItemType;
+        private int itemID;
+        private String name;
+        private double weight;
+        private boolean isStackable;
+        private int maxStack;
 
     Scanner brugerinput = new Scanner(System.in);
 
@@ -75,16 +73,14 @@ public abstract class Item {
                 name, maxStack, weight, isStackable);
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     public String getItemType() {
         return ItemType;
+    }
+}
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 }
 
