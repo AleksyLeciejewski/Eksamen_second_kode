@@ -13,14 +13,14 @@ public abstract class Item implements IsStackable{
     this.itemType = itemType;
   }
 
-  private int itemID;
-  private String name;
-  private double weight;
-  private boolean isStackable;
-  private int maxStack;
-  private String itemType;
+    private String ItemType;
+    private int itemID;
+    private String name;
+    private double weight;
+    private boolean isStackable;
+    private int maxStack;
 
-  Scanner brugerinput = new Scanner(System.in);
+    Scanner brugerinput = new Scanner(System.in);
 
     public int getItemID() {
         return itemID;
@@ -75,14 +75,10 @@ public abstract class Item implements IsStackable{
                 name, maxStack, weight, isStackable);
     }
 
-    public String getItemType() {
-        return itemType;
-    }
 
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
+    public String getItemType() {
+        return ItemType;
     }
 }
-
 
 
