@@ -3,12 +3,12 @@ package Items.Armor;
 import Items.Item;
 import Items.ItemType;
 
-public class ShoulderArmor extends Item implements ItemType {
+public class ShoulderArmor extends Armor implements ItemType {
     public String name;
 
-    public ShoulderArmor(int itemID, String name, double weight, int maxStack, boolean isStackable, double defense){
-        super(name, itemID, weight, isStackable, maxStack);
-        this.name = name;
+    public ShoulderArmor(int itemID, String name, double weight, int maxStack, double defense, String ItemType){
+        super(itemID, name, weight, maxStack, defense, ItemType);
+
     }
 
 
