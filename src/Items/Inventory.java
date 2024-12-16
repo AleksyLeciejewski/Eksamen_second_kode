@@ -1,13 +1,15 @@
 package Items;
 
 import Database.DatabaseConnection;
+import Items.Armor.Armor;
+import Items.Consumable.Consumable;
+import Items.Weapon.Weapon;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 public class Inventory {
