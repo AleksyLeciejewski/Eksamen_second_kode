@@ -3,11 +3,11 @@ package Items.Weapon;
 import Items.Item;
 import Items.ItemType;
 
-public class OneHandItem extends Item implements ItemType {
+public class OneHandItem extends Weapon implements ItemType {
     private String name;
 
-    public OneHandItem(int itemID, String name, double weight, int maxStack, boolean isStackable, double defense){
-        super(name, itemID, weight, isStackable, maxStack);
+    public OneHandItem(int itemID, String name, double weight, int maxStack, double damage){
+        super(name, itemID, weight, maxStack, damage);
     }
 
 
