@@ -2,12 +2,12 @@ package Items;
 
 import java.util.Scanner;
 
-public abstract class Item {
+public abstract class Item implements IsStackable{
 
-  public Item(String name, int itemID, double weight, boolean isStackable, int maxStack, String itemType){
+  public Item(String name, int itemID, double weight, int maxStack, String itemType){
     this.itemID = itemID;
-    this.isStackable = isStackable;
     this.name = name;
+    isStackable();
     this.weight = weight;
     this.maxStack = maxStack;
     this.itemType = itemType;
@@ -46,12 +46,13 @@ public abstract class Item {
         this.weight = weight;
     }
 
-//    public boolean isStackable() {
-//        if(isStackable == false){
-//            setMaxStack(1);
-//        }
-//        return false;
-//    }
+    @Override
+    public boolean isStackable() {
+        if(isStackable == false){
+            setMaxStack(1);
+        }
+        return false;
+    }
 
     public void setStackable(boolean stackable) {
         isStackable = stackable;

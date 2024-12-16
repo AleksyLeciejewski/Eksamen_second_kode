@@ -11,8 +11,8 @@ public class Weapon extends Item implements Reforge {
     Random reforgeSetter = new Random();
 
 
-    public Weapon(String name, int itemID, double weight, double damage){
-        super(name, itemID, weight);
+    public Weapon(String name, int itemID, double weight, double damage, boolean isStackable){
+        super(name, itemID, weight, isStackable);
         this.damage = damage;
     }
 //gennem tabel-id refererer vi til den passende tabel.

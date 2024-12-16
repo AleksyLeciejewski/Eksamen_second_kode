@@ -5,7 +5,6 @@ import Items.Armor.Armor;
 import Items.Consumable.Consumable;
 import Items.Item;
 import Items.Weapon.Weapon;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
