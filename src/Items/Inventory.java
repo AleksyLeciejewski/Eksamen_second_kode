@@ -1,9 +1,6 @@
 package Items;
 
 import Database.DatabaseConnection;
-import Items.Armor.Armor;
-import Items.Consumable.Consumable;
-import Items.Weapon.Weapon;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -234,6 +231,8 @@ public class Inventory {
             System.err.println("Error upon loading inventory");
         }
     }
+
+
 
     public void sortInventory(int choice) {
         try {

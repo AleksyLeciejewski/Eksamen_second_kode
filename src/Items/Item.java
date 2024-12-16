@@ -4,23 +4,22 @@ import java.util.Scanner;
 
 public abstract class Item {
 
-  public Item(String name, int itemID, double weight, boolean isStackable, int maxStack, String itemType){
-    this.itemID = itemID;
-    this.isStackable = isStackable;
-    this.name = name;
-    this.weight = weight;
-    this.maxStack = maxStack;
-    this.itemType = itemType;
-  }
+    public Item(String name,int itemID,double weight,boolean isStackable,int maxStack, double price, String ItemType){
+        this.itemID = itemID;
+        this.isStackable = isStackable;
+        this.name = name;
+        this.weight = weight;
+        this.maxStack = maxStack;
+        this.ItemType = ItemType;
+    }
+        private String ItemType;
+        private int itemID;
+        private String name;
+        private double weight;
+        private boolean isStackable;
+        private int maxStack;
 
-  private int itemID;
-  private String name;
-  private double weight;
-  private boolean isStackable;
-  private int maxStack;
-  private String itemType;
-
-  Scanner brugerinput = new Scanner(System.in);
+    Scanner brugerinput = new Scanner(System.in);
 
     public int getItemID() {
         return itemID;
@@ -46,12 +45,12 @@ public abstract class Item {
         this.weight = weight;
     }
 
-//    public boolean isStackable() {
-//        if(isStackable == false){
-//            setMaxStack(1);
-//        }
-//        return false;
-//    }
+    public boolean isStackable() {
+        if(isStackable == false){
+            setMaxStack(1);
+        }
+        return false;
+    }
 
     public void setStackable(boolean stackable) {
         isStackable = stackable;
@@ -74,9 +73,11 @@ public abstract class Item {
                 name, maxStack, weight, isStackable);
     }
 
+
     public String getItemType() {
-        return itemType;
+        return ItemType;
     }
+}
 
     public void setItemType(String itemType) {
         this.itemType = itemType;
