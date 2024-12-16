@@ -1,6 +1,6 @@
 package GUI;
 
-import Items.Inventory;
+import Inventory.Inventory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class InventoryFrame extends JFrame {
     JButton shopkeeperButton = new JButton("Shopkeeper");
     JButton removeItemButton = new JButton("Remove Item");
     JButton addSlotButton = new JButton("Add Slot");
-    Inventory inventory = new Inventory(32, 0.0); // Create an instance of Items.Inventory
+    Inventory inventory = new Inventory(32, 0.0); // Create an instance of Inventory.Inventory
 
     public InventoryFrame() {
         JPanel buttonPanel = new JPanel();

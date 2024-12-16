@@ -1,4 +1,4 @@
-package Items; // Angiver, at denne klasse tilhører "Items"-pakken
+package Inventory; // Angiver, at denne klasse tilhører "Items"-pakken
 import java.util.List; // Importerer Java's List-interface, der bruges til at håndtere samlinger
 import java.util.Comparator; // Importerer Comparator til sammenligning af elementer
 

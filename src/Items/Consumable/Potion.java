@@ -18,4 +18,8 @@ public class Potion extends Consumable {
         return new Potion("Healing Items.Potion", itemID, 0.5, true, 4, "Healing", 5);
     }
 
+    @Override
+    public boolean isStackable() {
+        return super.isStackable();
+    }
 }

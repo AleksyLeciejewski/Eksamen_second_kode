@@ -21,4 +21,9 @@ public class Arrow extends Consumable {
             damageWithoutEffect();
         }
     }
+
+    @Override
+    public boolean isStackable() {
+        return super.isStackable();
+    }
 }
