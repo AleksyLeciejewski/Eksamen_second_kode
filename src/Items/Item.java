@@ -12,12 +12,12 @@ public abstract class Item {
         this.maxStack = maxStack;
         this.ItemType = ItemType;
     }
-        private String ItemType;
-        private int itemID;
-        private String name;
-        private double weight;
-        private boolean isStackable;
-        private int maxStack;
+    private String ItemType;
+    private int itemID;
+    private String name;
+    private double weight;
+    private boolean isStackable;
+    private int maxStack;
 
     Scanner brugerinput = new Scanner(System.in);
 
@@ -78,11 +78,5 @@ public abstract class Item {
         return ItemType;
     }
 }
-
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
-    }
-}
-
 
 
