@@ -19,7 +19,7 @@ public abstract class Item {
     private boolean isStackable;
     private int maxStack;
 
-    Scanner brugerinput = new Scanner(System.in);
+  Scanner brugerinput = new Scanner(System.in);
 
     public int getItemID() {
         return itemID;
@@ -45,12 +45,12 @@ public abstract class Item {
         this.weight = weight;
     }
 
-    public boolean isStackable() {
-        if(isStackable == false){
-            setMaxStack(1);
-        }
-        return false;
-    }
+//    public boolean isStackable() {
+//        if(isStackable == false){
+//            setMaxStack(1);
+//        }
+//        return false;
+//    }
 
     public void setStackable(boolean stackable) {
         isStackable = stackable;
@@ -77,6 +77,5 @@ public abstract class Item {
     public String getItemType() {
         return ItemType;
     }
-}
 
 
