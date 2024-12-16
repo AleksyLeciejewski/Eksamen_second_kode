@@ -232,44 +232,35 @@ public class Inventory {
         }
     }
 
-    public class Quicksort {
-        public static <T> void quicksort(List<T> list, int low, int high, Comparator<T> comparator) {
-            if (low < high) {
+    public void sortInventory(int choice) {
+        try {
 
-                int pivotIndex = partition(list, low, high, comparator);
+            switch (choice) {
+                case 1:
+                    Bubblesort.sort(inventoryList, Comparator.comparing(Item::getName));
+                    break;
 
-                quicksort(list, low, pivotIndex - 1, comparator);
+                case 2:
+                    Bubblesort.sort(inventoryList, Comparator.comparingDouble(Item::getWeight));
+                    break;
 
-                quicksort(list, pivotIndex + 1, high, comparator);
+                case 3:
+                    Bubblesort.sort(inventoryList, Comparator.comparing(Item::getItemType));
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Ugyldigt valg, prøv igen.");
             }
-        }
+            System.out.println("Inventory sorteret!");
 
-        private static <T> int partition(List<T> list, int low, int high, Comparator<T> comparator) {
-            T pivot = list.get(high);
-            int i = low - 1;
-
-            for (int j = low; j < high; j++) {
-                if (comparator.compare(list.get(j), pivot) <= 0) {
-                    i++;
-                    // Byt elementerne
-                    swap(list, i, j);
-                }
-            }
-
-            swap(list, i + 1, high);
-            return i + 1;
-        }
-
-        private static <T> void swap(List<T> list, int i, int j) {
-            T temp = list.get(i);
-            list.set(i, list.get(j));
-            list.set(j, temp);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            System.out.println("Sorting fejl");
+        } catch (Exception e) {
+            System.err.println("Uventet fejl ved sortering: " + e.getMessage());
         }
     }
 
-    public static void sortInventory(){
-
-    }
 
 
     public double calcTotalWeight(){
