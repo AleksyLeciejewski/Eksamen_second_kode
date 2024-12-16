@@ -4,13 +4,14 @@ import Items.Item;
 import Items.Reforge;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class Weapon extends Item implements Reforge {
-
+    Scanner brugerInput = new Scanner(System.in);
     Random reforgeSetter = new Random();
 
 
-    public Weapon(String name, int itemID, double weight, boolean , int maxStack, double damage){
+    public Weapon(String name, int itemID, double weight, double damage){
         super(name, itemID, weight);
         this.damage = damage;
     }
@@ -27,7 +28,7 @@ public class Weapon extends Item implements Reforge {
 
     @Override
     public void ReforgeStats() {
-        int valg = brugerinput.nextInt();
+        int valg = brugerInput.nextInt();
         System.out.println("You have chosen to reforge the stats on your weapon");
         System.out.println("Select the stats you'd like to reforge");
 
