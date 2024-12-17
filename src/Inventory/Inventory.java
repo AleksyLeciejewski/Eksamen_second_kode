@@ -33,16 +33,17 @@ public class Inventory {
 
 //addItem skal kaldes ved hver add item. Hver metode skal referere til sin respektive tabel.
     public void addItem(Item item) {
-        String sql = "INSERT INTO inventorylist (name, MaxStack, currentDrinks) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO InventoryMain (name, weight, maxStack, itemType) VALUES (?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Indsætter værdier i placeholders i SQL-sætningen.
-            preparedStatement.setString(1, item.getName());
-            preparedStatement.setInt(2, item.getItemID());
-            preparedStatement.setInt(3, item.getMaxStack());
-            preparedStatement.setDouble(4, item.getWeight());
-            preparedStatement.setBoolean(5, item.isStackable());
+            preparedStatement.setString(2, item.getName());
+            preparedStatement.setInt(1, item.getItemID());
+            preparedStatement.setInt(4, item.getMaxStack());
+            preparedStatement.setDouble(3, item.getWeight());
+            preparedStatement.setInt(5, item.getItemType());
+
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -70,16 +71,14 @@ public class Inventory {
         }
 
         addItem(weapon);
-        String sql = "INSERT INTO weapons (name, MaxStack, weight, damage) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO WeaponsMain (weaponId, damage, itemType) VALUES (?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Indsætter værdier i placeholders i SQL-sætningen.
-            preparedStatement.setString(1, weapon.getName());
-            preparedStatement.setInt(2, weapon.getMaxStack());
-            preparedStatement.setDouble(3, weapon.getWeight());
-          //  preparedStatement.setBoolean(4, weapon.isStackable());
-            preparedStatement.setDouble(5, weapon.getDamage());
+            preparedStatement.setInt(1, weapon.getItemID());
+            preparedStatement.setDouble(2, weapon.getDamage());
+            preparedStatement.setInt(3, weapon.getItemType());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -108,16 +107,14 @@ public class Inventory {
         }
 
         addItem(armor);
-        String sql = "INSERT INTO armor (name, MaxStack, weight, defense) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO ArmorMain (armorId, defense, itemType) VALUES (?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Indsætter værdier i placeholders i SQL-sætningen.
-            preparedStatement.setString(1, armor.getName());
-            preparedStatement.setInt(2, armor.getMaxStack());
-            preparedStatement.setDouble(3, armor.getWeight());
-            preparedStatement.setBoolean(4, armor.isStackable());
-            preparedStatement.setDouble(5, armor.getDefense());
+            preparedStatement.setInt(1, armor.getItemID());
+            preparedStatement.setDouble(2, armor.getDefense());
+            preparedStatement.setInt(3, armor.getItemType());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -146,17 +143,15 @@ public class Inventory {
         }
 
         addItem(consumable);
-        String sql = "INSERT INTO consumable (name, MaxStack, weight, duration, effect) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ConsumableMain (consumableId, consumableEffect, consumableDuration, itemType) VALUES (?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Indsætter værdier i placeholders i SQL-sætningen.
-            preparedStatement.setString(1, consumable.getName());
-            preparedStatement.setInt(2, consumable.getMaxStack());
-            preparedStatement.setDouble(3, consumable.getWeight());
-            preparedStatement.setBoolean(4, consumable.isStackable());
-            preparedStatement.setDouble(5, consumable.getDuration());
-            preparedStatement.setString(6, consumable.getEffect());
+            preparedStatement.setInt(1, consumable.getItemID());
+            preparedStatement.setInt(4, Integer.parseInt(consumable.getItemType()));
+            preparedStatement.setInt(3, consumable.getDuration());
+            preparedStatement.setString(2, consumable.getEffect());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -184,7 +179,7 @@ public class Inventory {
             return;
         }
 
-        String sql = "DELETE FROM inventorylist WHERE itemID = ?";
+        String sql = "DELETE FROM InventoryMain WHERE itemID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -213,19 +208,19 @@ public class Inventory {
 
 
     public void showInventory() {
-        String sql = "SELECT name, maxStack, weight, isStackable FROM inventorylist";
+        String sql = "SELECT name, maxStack, weight, isStackable FROM InventoryMain";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
+                String name = resultSet.getString("itemname");
                 int maxStack = resultSet.getInt("maxStack");
                 double weight = resultSet.getDouble("weight");
-                boolean isStackable = resultSet.getBoolean("isStackable");
+                String itemType = resultSet.getString("itemType");
 
-                System.out.printf("Items.Item: %s, Max Stack: %d, Weight: %.2f, Is Stackable: %b%n", name, maxStack, weight, isStackable);
+                System.out.printf("Items.Item: %s, Max Stack: %d, Weight: %.2f, Is Stackable: %b%n", name, maxStack, weight, itemType);
             }
 
         } catch (SQLException e) {

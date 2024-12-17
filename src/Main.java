@@ -12,8 +12,10 @@ public class Main {
          boolean run = true;
 
 
-while(run){
+//while(run){
     getRandomItem();
+
+    inventory.showInventory();
 
 }
 
@@ -22,4 +24,3 @@ while(run){
 
 
     }
-}
