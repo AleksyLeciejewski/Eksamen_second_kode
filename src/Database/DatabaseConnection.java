@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
 
 
-    private static String URL = "jdbc:mysql://localhost:3306/inventory";
+    private static String URL = "jdbc:mysql://localhost:3306/inventorysystem";
 
     private static String user = "root";
 
