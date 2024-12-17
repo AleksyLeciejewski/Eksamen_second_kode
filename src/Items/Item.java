@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 public abstract class Item implements IsStackable{
 
-  public Item(String name, int itemID, double weight, int maxStack, String itemType){
+  public Item(String name, int itemID, double weight, int maxStack, String itemType, boolean isStackable){
     this.itemID = itemID;
     this.name = name;
-    isStackable();
     this.weight = weight;
     this.maxStack = maxStack;
     this.ItemType = itemType;
+    this.isStackable = isStackable();
   }
 
     private String ItemType;
@@ -48,10 +48,7 @@ public abstract class Item implements IsStackable{
 
     @Override
     public boolean isStackable() {
-        if(isStackable == false){
-            setMaxStack(1);
-        }
-        return false;
+        return isStackable;
     }
 
     public void setStackable(boolean stackable) {

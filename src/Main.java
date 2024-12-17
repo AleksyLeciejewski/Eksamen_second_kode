@@ -1,4 +1,8 @@
 import Inventory.Inventory;
+import Items.Item;
+import Items.Weapon.Weapon;
+
+import java.util.HashMap;
 
 import static Items.ItemFactory.getRandomItem;
 
@@ -9,13 +13,14 @@ public class Main {
 
          Inventory inventory = new Inventory(32, 0);
 
-         boolean run = true;
+//
+//        Item sword = new Weapon("Sword", 1, 3,2,"shortsword",1);
+//         inventory.addItem(sword);
+//
+//
+         inventory.showInventory();
 
 
-//while(run){
-    getRandomItem();
-
-    inventory.showInventory();
 
 }
 

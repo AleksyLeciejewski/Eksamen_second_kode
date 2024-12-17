@@ -5,8 +5,8 @@ import Items.Item;
 
 public class Consumable extends Item implements IsStackable {
 
-    public Consumable(String name, int itemID, double weight, int maxStack, String effect, int duration, String itemType){
-        super(name, itemID, weight, maxStack, itemType);
+    public Consumable(String name, int itemID, double weight, int maxStack, String effect, int duration, String itemType, boolean isStackable){
+        super(name, itemID, weight, maxStack, itemType, isStackable);
         this.duration = duration;
         this.effect = effect;
     }
