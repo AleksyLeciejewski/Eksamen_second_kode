@@ -175,21 +175,32 @@ public class Inventory {
         totalWeight += consumable.getWeight();
     }
 
-    public void removeItemBySlot(int slot) {
+    public void removeItemBySlot() {
+        String input = JOptionPane.showInputDialog("Enter the slot number to be deleted:");
+        if (input == null) {
+            return; // User cancelled the input
+        }
+
+        int slot;
+        try {
+            slot = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid slot number.");
+            return;
+        }
 
         if (slot < 1 || slot > inventoryList.size()) {
-            System.out.println("The slot space is out of bounds. Try again.");
+            JOptionPane.showMessageDialog(null, "The slot number is out of bounds. Try again.");
             return;
         }
 
         Item itemToRemove = inventoryList.get(slot - 1);
         if (itemToRemove == null) {
-            System.out.println("Slot spot is empty. No item to remove.");
+            JOptionPane.showMessageDialog(null, "Slot is empty. No item to remove.");
             return;
         }
 
         String sql = "DELETE FROM inventorylist WHERE itemID = ?";
-
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -197,21 +208,14 @@ public class Inventory {
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-
-                System.out.printf("Genstanden '%s' er blevet slettet fra slot %d.%n",
-                        itemToRemove.getName(), slot);
-
-
                 inventoryList.remove(slot - 1);
+                JOptionPane.showMessageDialog(null, "Item '" + itemToRemove.getName() + "' has been deleted from slot " + slot + ".");
             } else {
-
-                System.out.printf("Kunne ikke finde genstanden '%s' i databasen.%n",
-                        itemToRemove.getName());
+                JOptionPane.showMessageDialog(null, "Could not find the item in the database.");
             }
 
         } catch (SQLException e) {
-
-            System.err.printf("Fejl ved sletning af slot %d: %s%n", slot, e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error deleting item: " + e.getMessage());
         }
     }
 

@@ -48,7 +48,7 @@ public class InventoryFrame extends JFrame {
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeItem();
+                inventory.removeItemBySlot();
             }
         });
         addSlotButton.addActionListener(new ActionListener() {
@@ -95,15 +95,6 @@ public class InventoryFrame extends JFrame {
         System.out.println("Random item added to inventory: " + randomItem.getName());
     }
 
-    private void removeItem() {
-        try {
-            int slot = Integer.parseInt(JOptionPane.showInputDialog("Slot to be deleted:"));
-            inventory.removeItemBySlot(slot);
-            JOptionPane.showMessageDialog(null, "Item has been deleted!");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid slot.");
-        }
-    }
 
     public static void main(String[] args) {
         new InventoryFrame();
