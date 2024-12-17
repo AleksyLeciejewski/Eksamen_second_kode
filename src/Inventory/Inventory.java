@@ -5,6 +5,8 @@ import Items.Armor.Armor;
 import Items.Consumable.Consumable;
 import Items.Item;
 import Items.Weapon.Weapon;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -30,6 +32,8 @@ public class Inventory {
     this.inventoryList = new ArrayList<>();
     boolean maxWeight = this.weightCapacity;
     }
+
+
 
 //addItem skal kaldes ved hver add item. Hver metode skal referere til sin respektive tabel.
     public void addItem(Item item) {
@@ -236,32 +240,36 @@ public class Inventory {
 
 
 
-    public void sortInventory(int choice) {
-        try {
+    public void sortInventory() {
+        String[] options = {"Name", "Weight", "Item Type"};
+        int choice = JOptionPane.showOptionDialog(null,
+                "Choose sorting option",
+                "Sort Inventory",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]);
 
+        try {
             switch (choice) {
-                case 1:
+                case 0:
                     Bubblesort.sort(inventoryList, Comparator.comparing(Item::getName));
                     break;
-
-                case 2:
+                case 1:
                     Bubblesort.sort(inventoryList, Comparator.comparingDouble(Item::getWeight));
                     break;
-
-                case 3:
+                case 2:
                     Bubblesort.sort(inventoryList, Comparator.comparing(Item::getItemType));
                     break;
-
                 default:
-                    throw new IllegalArgumentException("Ugyldigt valg, prøv igen.");
+                    throw new IllegalArgumentException("Invalid choice, please try again.");
             }
-            System.out.println("Inventory sorteret!");
-
+            JOptionPane.showMessageDialog(null, "Inventory sorted!");
         } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-            System.out.println("Sorting fejl");
+            JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (Exception e) {
-            System.err.println("Uventet fejl ved sortering: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Unexpected error during sorting: " + e.getMessage());
         }
     }
 
@@ -293,23 +301,28 @@ public class Inventory {
 
  */
 
-    public int addSlots(){
+    public int addSlots() {
+        JOptionPane.showMessageDialog(null, "You have chosen to add additional slot spaces to your inventory");
+        String input = JOptionPane.showInputDialog("How many slots would you like to expand your inventory with?: ");
 
-        System.out.println("You have chosen to add additional slot spaces to your inventory");
-        System.out.println("How many slots would you like to expand your inventory with?: ");
-
-    int moreSlots = brugerInput.nextInt();
-
-        if(moreSlots <= 0){
-            System.out.println("You cannot add 0 slots");
-        return maxSlots;
+        int moreSlots;
+        try {
+            moreSlots = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid number.");
+            return maxSlots;
         }
 
-    this.maxSlots += moreSlots;
+        if (moreSlots <= 0) {
+            JOptionPane.showMessageDialog(null, "You cannot add 0 slots");
+            return maxSlots;
+        }
 
-        System.out.println("You have now expanded your inventory with " + moreSlots + " slots");
-        System.out.println("Your new inventory capacity is now: " + maxSlots + "!");
+        this.maxSlots += moreSlots;
 
-    return maxSlots;
+        JOptionPane.showMessageDialog(null, "You have now expanded your inventory with " + moreSlots + " slots");
+        JOptionPane.showMessageDialog(null, "Your new inventory capacity is now: " + maxSlots + "!");
+
+        return maxSlots;
     }
 }
