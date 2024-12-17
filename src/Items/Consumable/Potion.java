@@ -1,8 +1,8 @@
 package Items.Consumable;
 
 public class Potion extends Consumable {
-    public Potion(String name, int itemID, double weight, int maxStack, String effect, int duration, String itemType) {
-        super(name, itemID, weight, maxStack, effect, duration, itemType);
+    public Potion(String name, int itemID, double weight, int maxStack, String effect, int duration, String itemType, boolean isStackable) {
+        super(name, itemID, weight, maxStack, effect, duration, itemType, isStackable);
     }
 
     public void applyEffect(){

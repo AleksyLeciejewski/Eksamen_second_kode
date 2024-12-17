@@ -10,9 +10,7 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Inventory {
     Scanner brugerInput = new Scanner(System.in);
@@ -22,31 +20,46 @@ public class Inventory {
     private ArrayList<Item> inventoryList;
     private int maxWeight = 50;
     boolean weightCapacity = maxWeight >= totalWeight;
+    private Map<String, Integer> itemTypeMap = new HashMap<>();
     public ArrayList<Item> getInventoryList() {
         return inventoryList;
     }
 
-    public Inventory(int maxSlots, double totalWeight){
-    this.maxSlots = maxSlots;
-    this.availableSlots = maxSlots;
-    this.inventoryList = new ArrayList<>();
-    boolean maxWeight = this.weightCapacity;
+    public Inventory(int maxSlots, double totalWeight) {
+        this.maxSlots = maxSlots;
+        this.availableSlots = maxSlots;
+        this.inventoryList = new ArrayList<>();
+        boolean maxWeight = this.weightCapacity;
+        this.itemTypeMap = new HashMap<>();
+        itemTypeMap.put("shortsword", 1);
+        itemTypeMap.put("Armor", 2);
+        itemTypeMap.put("Consumable", 3);
     }
 
+        public Map<String, Integer> getItemTypeMap() {
+            return itemTypeMap;
+    }
 
 
 //addItem skal kaldes ved hver add item. Hver metode skal referere til sin respektive tabel.
     public void addItem(Item item) {
-        String sql = "INSERT INTO InventoryMain (name, weight, maxStack, itemType) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO InventoryMain (itemId, itemname, weight, maxStack, itemType) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            Integer itemTypeValue = itemTypeMap.get(item.getItemType());
+            if (itemTypeValue == null) {
+                throw new IllegalArgumentException("Unknown item type: " + item.getItemType());
+            }
+
 
             // Indsætter værdier i placeholders i SQL-sætningen.
             preparedStatement.setString(2, item.getName());
             preparedStatement.setInt(1, item.getItemID());
             preparedStatement.setInt(4, item.getMaxStack());
             preparedStatement.setDouble(3, item.getWeight());
-            preparedStatement.setInt(5, item.getItemType());
+            preparedStatement.setInt(5, itemTypeMap.get(item.getItemType()));
+            //preparedStatement.setInt(5, item.getItemType());
 
 
             int rowsInserted = preparedStatement.executeUpdate();
@@ -82,7 +95,7 @@ public class Inventory {
             // Indsætter værdier i placeholders i SQL-sætningen.
             preparedStatement.setInt(1, weapon.getItemID());
             preparedStatement.setDouble(2, weapon.getDamage());
-            preparedStatement.setInt(3, weapon.getItemType());
+          //  preparedStatement.setInt(3, weapon.getItemType());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -118,7 +131,7 @@ public class Inventory {
             // Indsætter værdier i placeholders i SQL-sætningen.
             preparedStatement.setInt(1, armor.getItemID());
             preparedStatement.setDouble(2, armor.getDefense());
-            preparedStatement.setInt(3, armor.getItemType());
+         //   preparedStatement.setInt(3, armor.getItemType());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -216,7 +229,7 @@ public class Inventory {
 
 
     public void showInventory() {
-        String sql = "SELECT name, maxStack, weight, isStackable FROM InventoryMain";
+        String sql = "SELECT itemname, maxStack, weight, itemtype FROM InventoryMain";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
