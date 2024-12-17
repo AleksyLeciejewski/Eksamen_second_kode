@@ -1,8 +1,8 @@
 package Items.Consumable;
 
 public class Potion extends Consumable {
-    public Potion(String name, int itemID, double weight, boolean isStackable, int maxStack, String effect, int duration) {
-        super(name, itemID, weight, isStackable, maxStack, effect, duration);
+    public Potion(String name, int itemID, double weight, int maxStack, String effect, int duration, String itemType) {
+        super(name, itemID, weight, maxStack, effect, duration, itemType);
     }
 
     public void applyEffect(){
@@ -13,10 +13,10 @@ public class Potion extends Consumable {
         System.out.println("Drinking potion: " + this.getName());
         applyEffect();
     }
-
-    public static Potion createHealthPotion(String name, int itemID, int duration){
-        return new Potion("Healing Items.Potion", itemID, 0.5, true, 4, "Healing", 5);
-    }
+//
+//    public static Potion createHealthPotion(String name, int itemID, int duration){
+//        return new Potion("Healing Items.Potion", itemID, 0.5, true, 4, "Healing", 5);
+//    }
 
     @Override
     public boolean isStackable() {

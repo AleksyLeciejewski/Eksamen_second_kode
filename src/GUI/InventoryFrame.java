@@ -27,7 +27,7 @@ public class InventoryFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new ShopkeeperFrame();
+              //  new ShopkeeperFrame();
             }
         });
         removeItemButton.setBounds(400, 25, 100, 50);

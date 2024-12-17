@@ -108,7 +108,7 @@ public class Inventory {
         }
 
         addItem(armor);
-        String sql = "INSERT INTO armor (name, MaxStack, weight, defense) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO armor (name, MaxStack, weight, defense) VALUES (?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -184,7 +184,7 @@ public class Inventory {
             return;
         }
 
-        String sql = "DELETE FROM Inventory WHERE itemID = ?";
+        String sql = "DELETE FROM inventorylist WHERE itemID = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -213,7 +213,7 @@ public class Inventory {
 
 
     public void showInventory() {
-        String sql = "SELECT name, maxStack, weight, isStackable FROM Inventory";
+        String sql = "SELECT name, maxStack, weight, isStackable FROM inventorylist";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

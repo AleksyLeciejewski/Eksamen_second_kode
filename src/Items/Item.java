@@ -10,7 +10,7 @@ public abstract class Item implements IsStackable{
     isStackable();
     this.weight = weight;
     this.maxStack = maxStack;
-    this.itemType = itemType;
+    this.ItemType = itemType;
   }
 
     private String ItemType;

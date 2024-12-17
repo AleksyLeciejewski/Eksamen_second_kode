@@ -27,7 +27,7 @@ public class Armor extends Item implements Reforge {
 
     @Override
     public void ReforgeStats() {
-    int valg = brugerinput.nextInt();
+    int valg = brugerInput.nextInt();
         System.out.println("You have chosen to reforge the stats on your armor");
         System.out.println("Select the stats you'd like to reforge");
 
