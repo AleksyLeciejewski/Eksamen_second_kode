@@ -27,9 +27,9 @@ public class Armor extends Item implements Reforge {
 
     @Override
     public boolean isStackable(){
-        if(!isStackable()){
-            setMaxStack(1);
-        }
+//        if(!isStackable()){
+//            setMaxStack(1);
+
         return false;}
 
     @Override

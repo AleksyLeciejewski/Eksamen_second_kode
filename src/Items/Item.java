@@ -68,8 +68,8 @@ public abstract class Item implements IsStackable{
 
 
     public String toString() {
-        return String.format("name: %s, maxStack: %d, weight: %f, isStackable: %b",
-                name, maxStack, weight, isStackable);
+        return String.format("itemname: %s , weight: %f, maxStack: %d, isStackable: %b, itemType %s",
+                name, maxStack, weight, isStackable, getItemType());
     }
 
 
