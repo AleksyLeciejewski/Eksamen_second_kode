@@ -29,23 +29,28 @@ public class InventoryFrame extends JFrame {
         buttonPanel.add(addSlotButton);
         buttonPanel.add(sortItemsButton);
 
-        addItemButton.setBounds(150, 25, 100, 50);
+        int buttonWidth = 100;
+        int buttonHeight = 50;
+        int buttonY = 25;
+        int spacing = (900 - 4 * buttonWidth) / 5; // Calculate spacing between buttons
+
+        addItemButton.setBounds(spacing, buttonY, buttonWidth, buttonHeight);
+        removeItemButton.setBounds(2 * spacing + buttonWidth, buttonY, buttonWidth, buttonHeight);
+        addSlotButton.setBounds(3 * spacing + 2 * buttonWidth, buttonY, buttonWidth, buttonHeight);
+        sortItemsButton.setBounds(4 * spacing + 3 * buttonWidth, buttonY, buttonWidth, buttonHeight);
+
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addItem();
             }
         });
-        removeItemButton.setBounds(400, 25, 100, 50);
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeItem();
             }
-
         });
-
-        addSlotButton.setBounds(650, 25, 100, 50);
         addSlotButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,8 +58,6 @@ public class InventoryFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "Slot has been added!");
             }
         });
-
-        sortItemsButton.setBounds(800, 25, 100, 50);
         sortItemsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,7 +72,6 @@ public class InventoryFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(itemList);
         scrollPane.setBounds(0, 100, 900, 500);
         itemList.setCellRenderer(new ItemCellRenderer());
-
 
         this.setTitle("Inventory");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
