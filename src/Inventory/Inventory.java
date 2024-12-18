@@ -1,19 +1,16 @@
 package Inventory;
 
 import Database.DatabaseConnection;
-import Items.Armor.Armor;
+import Items.Armor.*;
 import Items.Consumable.Consumable;
 import Items.Item;
 import Items.Weapon.Weapon;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class Inventory {
-    Scanner brugerInput = new Scanner(System.in);
     private int availableSlots;
     private int maxSlots = 32;
     private double totalWeight;
@@ -21,8 +18,17 @@ public class Inventory {
     private int maxWeight = 50;
     boolean weightCapacity = maxWeight >= totalWeight;
     private Map<String, Integer> itemTypeMap = new HashMap<>();
-    public ArrayList<Item> getInventoryList() {
+    private List<Item> items;
+    private int nextItemID;
+
+    public List<Item> getInventoryList() {
         return inventoryList;
+    }
+    public int getNextItemID() {
+        return nextItemID++;
+    }
+    public Map<String, Integer> getItemTypeMap() {
+        return itemTypeMap;
     }
 
     public Inventory(int maxSlots, double totalWeight) {
@@ -31,19 +37,33 @@ public class Inventory {
         this.inventoryList = new ArrayList<>();
         boolean maxWeight = this.weightCapacity;
         this.itemTypeMap = new HashMap<>();
+        this.items = new ArrayList<>();
+        this.nextItemID = 1;
         itemTypeMap.put("shortsword", 1);
         itemTypeMap.put("Armor", 2);
         itemTypeMap.put("Consumable", 3);
+        itemTypeMap.put("one handed", 4);
+        itemTypeMap.put("two handed", 5);
+        itemTypeMap.put("healing", 6);
+        itemTypeMap.put("mana", 7);
+        itemTypeMap.put("chestplate", 8);
+        itemTypeMap.put("shoulder pads", 9);
+        itemTypeMap.put("Pants", 10);
+        itemTypeMap.put("Shield", 11);
+        itemTypeMap.put("leather hood", 12);
+        itemTypeMap.put("Two Hands", 13);
+        itemTypeMap.put("LegsArmor", 14);
+        itemTypeMap.put("One-handed", 15); // Ensure this is added
+        itemTypeMap.put("Chest Armor", 16);
+        itemTypeMap.put("Head Armor", 17);
+        itemTypeMap.put("one-hand", 18);
+        itemTypeMap.put("Shoulder Armor", 19);
     }
 
-        public Map<String, Integer> getItemTypeMap() {
-            return itemTypeMap;
-    }
 
-
-//addItem skal kaldes ved hver add item. Hver metode skal referere til sin respektive tabel.
+    //addItem skal kaldes ved hver add item. Hver metode skal referere til sin respektive tabel.
     public void addItem(Item item) {
-        String sql = "INSERT INTO InventoryMain (itemId, itemname, weight, maxStack, itemType) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO InventoryMain (itemname, weight, maxStack, itemType) VALUES (?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -52,39 +72,34 @@ public class Inventory {
                 throw new IllegalArgumentException("Unknown item type: " + item.getItemType());
             }
 
-
-            // Indsætter værdier i placeholders i SQL-sætningen.
-            preparedStatement.setString(2, item.getName());
-            preparedStatement.setInt(1, item.getItemID());
-            preparedStatement.setInt(4, item.getMaxStack());
-            preparedStatement.setDouble(3, item.getWeight());
-            preparedStatement.setInt(5, itemTypeMap.get(item.getItemType()));
-            //preparedStatement.setInt(5, item.getItemType());
-
+            preparedStatement.setString(1, item.getName());
+            preparedStatement.setInt(3, item.getMaxStack());
+            preparedStatement.setDouble(2, item.getWeight());
+            preparedStatement.setInt(4, itemTypeValue);
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                        System.out.println("A new item has been added to your inventory succesfully!");
+                System.out.println("A new item has been added to your inventory successfully!");
+                inventoryList.add(item); // Add item to inventoryList
+                availableSlots -= 1;
+                totalWeight += item.getWeight();
             } else {
                 System.out.println("Your inventory has no available slots remaining, please remove or sell an item");
             }
         } catch (SQLException e) {
-            // Håndterer SQL-relaterede fejl.
             e.printStackTrace();
         }
-        availableSlots -= 1;
-        totalWeight += item.getWeight();
     }
 
     public void addWeapon(Weapon weapon) {
 
-        if(totalWeight + weapon.getWeight() > maxWeight){
+        if (totalWeight + weapon.getWeight() > maxWeight) {
             System.out.println("You're over encumbered, please remove items to free up weight");
-        return;
+            return;
         }
-        if (availableSlots <= 0){
+        if (availableSlots <= 0) {
             System.out.println("Your inventory has no available slots remaining, please remove or sell an item");
-        return;
+            return;
         }
 
         addItem(weapon);
@@ -95,11 +110,11 @@ public class Inventory {
             // Indsætter værdier i placeholders i SQL-sætningen.
             preparedStatement.setInt(1, weapon.getItemID());
             preparedStatement.setDouble(2, weapon.getDamage());
-          //  preparedStatement.setInt(3, weapon.getItemType());
+            //  preparedStatement.setInt(3, weapon.getItemType());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                        System.out.println("A new weapon has been added to your inventory succesfully!");
+                System.out.println("A new weapon has been added to your inventory succesfully!");
             } else {
                 System.out.println("There was an error while adding the weapon to your inventory");
             }
@@ -114,11 +129,11 @@ public class Inventory {
 
     public void addArmor(Armor armor) {
 
-        if(totalWeight + armor.getWeight() > maxWeight){
+        if (totalWeight + armor.getWeight() > maxWeight) {
             System.out.println("You're over encumbered, please remove items to free up weight");
             return;
         }
-        if (availableSlots <= 0){
+        if (availableSlots <= 0) {
             System.out.println("Your inventory has no available slots remaining, please remove or sell an item");
             return;
         }
@@ -131,13 +146,13 @@ public class Inventory {
             // Indsætter værdier i placeholders i SQL-sætningen.
             preparedStatement.setInt(1, armor.getItemID());
             preparedStatement.setDouble(2, armor.getDefense());
-         //   preparedStatement.setInt(3, armor.getItemType());
+            //   preparedStatement.setInt(3, armor.getItemType());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                    System.out.println("A new armor has been added to your inventory succesfully!");
+                System.out.println("A new armor has been added to your inventory succesfully!");
 
-            } else{
+            } else {
                 System.out.println("There was an error while adding the armor to your inventory");
             }
         } catch (SQLException e) {
@@ -150,11 +165,11 @@ public class Inventory {
 
     public void addConsumable(Consumable consumable) throws SQLException {
 
-        if(totalWeight + consumable.getWeight() > maxWeight){
+        if (totalWeight + consumable.getWeight() > maxWeight) {
             System.out.println("You're over encumbered, please remove items to free up weight");
             return;
         }
-        if (availableSlots <= 0){
+        if (availableSlots <= 0) {
             System.out.println("Your inventory has no available slots remaining, please remove or sell an item");
             return;
         }
@@ -172,8 +187,9 @@ public class Inventory {
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("A new consumable has been added to your inventory succesfully!");                    availableSlots -= 1;
-            } else{
+                System.out.println("A new consumable has been added to your inventory succesfully!");
+                availableSlots -= 1;
+            } else {
                 System.out.println("There was an error while adding the armor to your inventory");
             }
         } catch (SQLException e) {
@@ -208,7 +224,7 @@ public class Inventory {
             return;
         }
 
-        String sql = "DELETE FROM InventoryMain WHERE itemID = ?";
+        String sql = "DELETE FROM InventoryMain WHERE itemid = ?";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -217,6 +233,8 @@ public class Inventory {
 
             if (rowsAffected > 0) {
                 inventoryList.remove(slot - 1);
+                availableSlots += 1;
+                totalWeight -= itemToRemove.getWeight();
                 JOptionPane.showMessageDialog(null, "Item '" + itemToRemove.getName() + "' has been deleted from slot " + slot + ".");
             } else {
                 JOptionPane.showMessageDialog(null, "Could not find the item in the database.");
@@ -229,19 +247,20 @@ public class Inventory {
 
 
     public void showInventory() {
-        String sql = "SELECT itemname, maxStack, weight, itemtype FROM InventoryMain";
+        String sql = "SELECT itemid, itemname, maxStack, weight, itemtype FROM InventoryMain";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
+                int itemID = resultSet.getInt("itemID");
                 String name = resultSet.getString("itemname");
                 int maxStack = resultSet.getInt("maxStack");
                 double weight = resultSet.getDouble("weight");
                 String itemType = resultSet.getString("itemType");
 
-                System.out.printf("Items.Item: %s, Max Stack: %d, Weight: %.2f, Is Stackable: %b%n", name, maxStack, weight, itemType);
+                System.out.printf("itemid %d, Items.Item: %s, Max Stack: %d, Weight: %.2f, Is Stackable: %b%n", itemID, name, maxStack, weight, itemType);
             }
 
         } catch (SQLException e) {
@@ -249,7 +268,6 @@ public class Inventory {
             System.err.println("Error upon loading inventory");
         }
     }
-
 
 
     public void sortInventory() {
@@ -266,18 +284,17 @@ public class Inventory {
         try {
             switch (choice) {
                 case 0:
-                    Bubblesort.sort(inventoryList, Comparator.comparing(Item::getName));
+                    inventoryList.sort(Comparator.comparing(Item::getName));
                     break;
                 case 1:
-                    Bubblesort.sort(inventoryList, Comparator.comparingDouble(Item::getWeight));
+                    inventoryList.sort(Comparator.comparingDouble(Item::getWeight));
                     break;
                 case 2:
-                    Bubblesort.sort(inventoryList, Comparator.comparing(Item::getItemType));
+                    inventoryList.sort(Comparator.comparing(Item::getItemType));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid choice, please try again.");
             }
-            JOptionPane.showMessageDialog(null, "Inventory sorted!");
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (Exception e) {
@@ -286,32 +303,13 @@ public class Inventory {
     }
 
 
-
-    public double calcTotalWeight(){
+    public double calcTotalWeight() {
         double totalWeight = 0;
         for (Item item : inventoryList) {
             totalWeight += item.getWeight();
         }
-    return totalWeight;
+        return totalWeight;
     }
-/*
-    public int addSlots(int moreSlots){
-
-    if(moreSlots <= 0){
-            System.out.println("Du kan ikke tilføje 0 slots");
-    return maxSlots;
-    }
-
-    this.maxSlots += moreSlots;
-
-        System.out.println("Du har nu udvidet din inventory med " + moreSlots + "pladser");
-        System.out.println("Din nuværende kapacitet er nu opgraderet til: " + maxSlots + "!");
-        System.out.println("Dit inventory er fyldt! Slet eller sælg items for at frigøre plads");
-
-    return maxSlots;
-    }
-
- */
 
     public int addSlots() {
         JOptionPane.showMessageDialog(null, "You have chosen to add additional slot spaces to your inventory");
@@ -336,5 +334,30 @@ public class Inventory {
         JOptionPane.showMessageDialog(null, "Your new inventory capacity is now: " + maxSlots + "!");
 
         return maxSlots;
+    }
+
+    public void clearDatabase() {
+        String[] tables = {"InventoryMain", "WeaponsMain", "ArmorMain", "ConsumableMain"};
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            // Disable foreign key checks
+            statement.execute("SET foreign_key_checks = 0");
+
+            // Truncate each table
+            for (String table : tables) {
+                String sql = "TRUNCATE TABLE " + table;
+                int rowsAffected = statement.executeUpdate(sql);
+                System.out.println("Cleared " + rowsAffected + " rows from " + table);
+            }
+
+            // Re-enable foreign key checks
+            statement.execute("SET foreign_key_checks = 1");
+
+            System.out.println("Database cleared successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error clearing the database.");
+        }
     }
 }

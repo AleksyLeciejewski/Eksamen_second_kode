@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public abstract class Item implements IsStackable{
 
-  public Item(String name, int itemID, double weight, int maxStack, String itemType, boolean isStackable){
+  public Item(String name, double weight, int maxStack, String itemType, boolean isStackable){
     this.itemID = itemID;
     this.name = name;
     this.weight = weight;
@@ -19,8 +19,6 @@ public abstract class Item implements IsStackable{
     private double weight;
     private boolean isStackable;
     private int maxStack;
-
-    Scanner brugerinput = new Scanner(System.in);
 
     public int getItemID() {
         return itemID;
@@ -67,9 +65,10 @@ public abstract class Item implements IsStackable{
     //Forslag: set boolean = false som standard, og override til true i subklasserne, hvis nødvendigt
 
 
+    @Override
     public String toString() {
-        return String.format("itemname: %s , weight: %f, maxStack: %d, isStackable: %b, itemType %s",
-                name, maxStack, weight, isStackable, getItemType());
+        return String.format("Name: %s, Weight: %.2f, Max Stack: %d, Item Type: %s",
+                name, weight, maxStack, ItemType);
     }
 
 

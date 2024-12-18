@@ -6,8 +6,8 @@ import Items.ItemType;
 public class ShoulderArmor extends Armor implements ItemType {
     public String name;
 
-    public ShoulderArmor(int itemID, String name, double weight, int maxStack, double defense, String ItemType, boolean isStackable){
-        super(itemID, name, weight, maxStack, defense, ItemType, isStackable);
+    public ShoulderArmor( String name, double weight, int maxStack, double defense, String ItemType, boolean isStackable){
+        super( name, weight, maxStack, defense, ItemType, isStackable);
 
     }
 

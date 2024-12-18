@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class InventoryFrame extends JFrame {
 
@@ -20,6 +21,8 @@ public class InventoryFrame extends JFrame {
     JList<Item> itemList = new JList<>(listModel);
 
     public InventoryFrame() {
+        inventory.clearDatabase();
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.gray);
         buttonPanel.setBounds(0, 0, 900, 100);
@@ -63,8 +66,11 @@ public class InventoryFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 inventory.sortInventory();
                 listModel.clear();
-                for (Item item : inventory.getInventoryList()) {
-                    listModel.addElement(item);
+                List<Item> sortedItems = inventory.getInventoryList();
+                if (sortedItems != null) {
+                    for (Item item : sortedItems) {
+                        listModel.addElement(item);
+                    }
                 }
             }
         });
@@ -91,10 +97,10 @@ public class InventoryFrame extends JFrame {
     // Method to add an item to the inventory
     private void addItem() {
         Item randomItem = ItemFactory.getRandomItem(); // Get a random item
+        randomItem.setItemID(inventory.getNextItemID()); // Set the itemID
         inventory.addItem(randomItem);
-        System.out.println("Random item added to inventory: " + randomItem.getName());
+        listModel.addElement(randomItem); // Add the item to the list model
     }
-
 
     public static void main(String[] args) {
         new InventoryFrame();

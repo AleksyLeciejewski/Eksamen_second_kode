@@ -11,8 +11,8 @@ public class Armor extends Item implements Reforge {
     Scanner brugerInput = new Scanner(System.in);
     Random reforgeSetter = new Random(); //random generator initialiseres
 
-    public Armor(int itemID, String name, double weight, int maxStack, double defense, String ItemType, boolean isStackable){
-        super(name, itemID, weight, maxStack, ItemType, isStackable);
+    public Armor( String name, double weight, int maxStack, double defense, String ItemType, boolean isStackable){
+        super(name, weight, maxStack, ItemType, isStackable);
         this.defense = defense;
    }
     double defense;

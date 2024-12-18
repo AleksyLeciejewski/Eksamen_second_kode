@@ -1,8 +1,8 @@
 package Items.Consumable;
 
 public class Arrow extends Consumable {
-    public Arrow(String name, int itemID, double weight, int maxStack, String effect, int duration, String itemType, boolean isStackable) {
-        super(name, itemID, weight, maxStack, effect, duration, itemType, isStackable);
+    public Arrow(String name, double weight, int maxStack, String effect, int duration, String itemType, boolean isStackable) {
+        super(name, weight, maxStack, effect, duration, itemType, isStackable);
     }
 
     public void damageWithEffect(){

@@ -5,8 +5,8 @@ import Items.ItemType;
 public class ChestArmor extends Armor implements ItemType {
     public String name;
 
-    public ChestArmor(int itemID, String name, double weight, int maxStack, double defense, String ItemType, boolean isStackable){
-        super(itemID, name, weight, maxStack, defense, ItemType, isStackable);
+    public ChestArmor( String name, double weight, int maxStack, double defense, String ItemType, boolean isStackable){
+        super( name, weight, maxStack, defense, ItemType, isStackable);
 
     }
 
