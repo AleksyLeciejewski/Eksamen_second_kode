@@ -24,9 +24,9 @@ public class Inventory {
     public List<Item> getInventoryList() {
         return inventoryList;
     }
-    public int getNextItemID() {
-        return nextItemID++;
-    }
+//    public int getNextItemID() {
+//        return nextItemID++;
+//    }
     public Map<String, Integer> getItemTypeMap() {
         return itemTypeMap;
     }
@@ -61,9 +61,27 @@ public class Inventory {
     }
 
 
+    public int getNextItemID() {
+        String sql = "SELECT MAX(itemid) AS maxItemID FROM InventoryMain";
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            if (resultSet.next()) {
+                return resultSet.getInt("maxItemID") + 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1; // Return 1 if there is an error or no items in the database
+    }
+
     //addItem skal kaldes ved hver add item. Hver metode skal referere til sin respektive tabel.
     public void addItem(Item item) {
-        String sql = "INSERT INTO InventoryMain (itemname, weight, maxStack, itemType) VALUES (?, ?, ?, ?)";
+        int nextItemID = getNextItemID();
+        item.setItemID(nextItemID);
+
+        String sql = "INSERT INTO InventoryMain (itemid, itemname, weight, maxStack, itemType) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -72,10 +90,11 @@ public class Inventory {
                 throw new IllegalArgumentException("Unknown item type: " + item.getItemType());
             }
 
-            preparedStatement.setString(1, item.getName());
-            preparedStatement.setInt(3, item.getMaxStack());
-            preparedStatement.setDouble(2, item.getWeight());
-            preparedStatement.setInt(4, itemTypeValue);
+            preparedStatement.setInt(1, item.getItemID());
+            preparedStatement.setString(2, item.getName());
+            preparedStatement.setDouble(3, item.getWeight());
+            preparedStatement.setInt(4, item.getMaxStack());
+            preparedStatement.setInt(5, itemTypeValue);
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -271,7 +290,7 @@ public class Inventory {
 
 
     public void sortInventory() {
-        String[] options = {"Name", "Weight", "Item Type"};
+        String[] options = {"Name", "Item ID", "Item Type"};
         int choice = JOptionPane.showOptionDialog(null,
                 "Choose sorting option",
                 "Sort Inventory",
@@ -287,7 +306,7 @@ public class Inventory {
                     inventoryList.sort(Comparator.comparing(Item::getName));
                     break;
                 case 1:
-                    inventoryList.sort(Comparator.comparingDouble(Item::getWeight));
+                    inventoryList.sort(Comparator.comparingDouble(Item::getItemID));
                     break;
                 case 2:
                     inventoryList.sort(Comparator.comparing(Item::getItemType));
