@@ -1,6 +1,5 @@
 package Items;
 
-import java.util.Scanner;
 
 public abstract class Item implements IsStackable{
 
@@ -61,20 +60,13 @@ public abstract class Item implements IsStackable{
         this.maxStack = maxStack;
     }
 
-
-    //Forslag: set boolean = false som standard, og override til true i subklasserne, hvis nødvendigt
-
-
     @Override
     public String toString() {
         return String.format("Name: %s, Weight: %.2f, Max Stack: %d, Item Type: %s",
                 name, weight, maxStack, ItemType);
     }
 
-
     public String getItemType() {
         return ItemType;
     }
 }
-
-

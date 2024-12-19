@@ -94,7 +94,6 @@ public class InventoryFrame extends JFrame {
         this.setVisible(true);
     }
 
-    // Method to add an item to the inventory
     private void addItem() {
         Item randomItem = ItemFactory.getRandomItem(); // Get a random item
         randomItem.setItemID(inventory.getNextItemID()); // Set the itemID

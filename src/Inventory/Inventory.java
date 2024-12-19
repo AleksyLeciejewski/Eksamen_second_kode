@@ -24,9 +24,7 @@ public class Inventory {
     public List<Item> getInventoryList() {
         return inventoryList;
     }
-//    public int getNextItemID() {
-//        return nextItemID++;
-//    }
+
     public Map<String, Integer> getItemTypeMap() {
         return itemTypeMap;
     }
