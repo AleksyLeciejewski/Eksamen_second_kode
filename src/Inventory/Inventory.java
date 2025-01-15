@@ -299,19 +299,21 @@ public class Inventory {
                 options[0]);
 
         try {
+            Comparator<Item> comparator;
             switch (choice) {
                 case 0:
-                    inventoryList.sort(Comparator.comparing(Item::getName));
+                    comparator = Comparator.comparing(Item::getName);
                     break;
                 case 1:
-                    inventoryList.sort(Comparator.comparingDouble(Item::getItemID));
+                    comparator = Comparator.comparingDouble(Item::getItemID);
                     break;
                 case 2:
-                    inventoryList.sort(Comparator.comparing(Item::getItemType));
+                    comparator = Comparator.comparing(Item::getItemType);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid choice, please try again.");
             }
+            Bubblesort.sort(inventoryList, comparator);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (Exception e) {
